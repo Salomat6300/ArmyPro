@@ -1,10 +1,24 @@
 import type {
     Vehicle,
     Country,
-} from "C:/Users/fuugo/Desktop/myapp/frontend/src/types/index.ts";
+} from "C:/Users/fuugo/Desktop/ArmyPro/frontend/src/types/index.ts";
+
+import rasm from "/public/images/pngegg1.png";
+import rasm2 from "/public/images/pngegg2.png";
+
+// Bayroq rasmlarini import qilamiz
+import uzFlag from "C:/Users/fuugo/Desktop/ArmyPro/frontend/src/assets/flag/uz.png";
+import ruFlag from "C:/Users/fuugo/Desktop/ArmyPro/frontend/src/assets/flag/kg.png";
+import uaFlag from "C:/Users/fuugo/Desktop/ArmyPro/frontend/src/assets/flag/kz.png";
+import czFlag from "C:/Users/fuugo/Desktop/ArmyPro/frontend/src/assets/flag/af.png";
+import usFlag from "C:/Users/fuugo/Desktop/ArmyPro/frontend/src/assets/flag/af.png";
 
 export const countries: Country[] = [
-    { id: "1", name: "O'zbekiston", flag: "🇺🇿" },
+    { id: "1", name: "O'zbekiston", flag: "🇺🇿", flagImage: uzFlag },
+    { id: "2", name: "Rossiya", flag: "🇷🇺", flagImage: ruFlag },
+    { id: "3", name: "Ukraina", flag: "🇺🇦", flagImage: uaFlag },
+    { id: "4", name: "Chexiya", flag: "🇨🇿", flagImage: czFlag },
+    { id: "5", name: "AQSh", flag: "🇺🇸", flagImage: usFlag },
 ];
 
 export const vehicles: Vehicle[] = [
@@ -13,7 +27,9 @@ export const vehicles: Vehicle[] = [
         name: "MIG-21 Fishbed",
         type: "Qiruvchi samolyot",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Croatian_MiG-21_%28cropped%29.jpg/330px-Croatian_MiG-21_%28cropped%29.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: uzFlag,
+        image: rasm,
         shortDescription:
             "Dunyodagi eng ko'p ishlab chiqarilgan supersonik qiruvchi samolyot",
         specifications: {
@@ -34,7 +50,9 @@ export const vehicles: Vehicle[] = [
         name: "L-39 Albatros",
         type: "Oʻquv samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/L-39ZA_Albatros_%28cropped%29.jpg/330px-L-39ZA_Albatros_%28cropped%29.jpg",
+        manufacturerCountry: "Chexiya",
+        manufacturerCountryFlag: czFlag,
+        image: rasm2,
         shortDescription:
             "Jet oʻquv samolyoti, harbiy uchuvchilar tayyorlash uchun",
         specifications: {
@@ -55,7 +73,9 @@ export const vehicles: Vehicle[] = [
         name: "Yak-52",
         type: "Oʻquv samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Yakkes_Yak-52_RA-3085K.jpg/330px-Yakkes_Yak-52_RA-3085K.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: ruFlag,
+        image: rasm,
         shortDescription:
             "Asosiy oʻquv samolyoti, sport va mashg'ulotlar uchun",
         specifications: {
@@ -76,7 +96,9 @@ export const vehicles: Vehicle[] = [
         name: "An-2 Colt",
         type: "Transport samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Antonov_An-2_%28cropped%29.jpg/330px-Antonov_An-2_%28cropped%29.jpg",
+        manufacturerCountry: "Ukraina",
+        manufacturerCountryFlag: uzFlag,
+        image: rasm2,
         shortDescription:
             "Koʻp maqsadli biplan, qishloq xoʻjaligida qoʻllaniladi",
         specifications: {
@@ -97,7 +119,9 @@ export const vehicles: Vehicle[] = [
         name: "Su-27 Flanker",
         type: "Qiruvchi samolyot",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Sukhoi_Su-27SKM_at_MAKS-2005_airshow.jpg/330px-Sukhoi_Su-27SKM_at_MAKS-2005_airshow.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: ruFlag,
+        image: rasm,
         shortDescription:
             "Toʻrtinchi avlod qiruvchi samolyot, havo ustunligi uchun",
         specifications: {
@@ -118,7 +142,9 @@ export const vehicles: Vehicle[] = [
         name: "MiG-29 Fulcrum",
         type: "Qiruvchi samolyot",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/VVS_100th_IMG_0691_%287727464290%29_%28cropped%29.jpg/330px-VVS_100th_IMG_0691_%287727464290%29_%28cropped%29.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: ruFlag,
+        image: rasm2,
         shortDescription:
             "Front qiruvchi samolyot, qisqa masofali operatsiyalar uchun",
         specifications: {
@@ -139,7 +165,9 @@ export const vehicles: Vehicle[] = [
         name: "Su-25 Frogfoot",
         type: "Hujum samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Sukhoi_Su-25_of_the_Russian_Air_Force_landing_at_Vladivostok_%288683076150%29.jpg/330px-Sukhoi_Su-25_of_the_Russian_Air_Force_landing_at_Vladivostok_%288683076150%29.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: usFlag,
+        image: rasm,
         shortDescription:
             "Yerdagi nishonlarga hujum qilish uchun mo'ljallangan",
         specifications: {
@@ -160,7 +188,9 @@ export const vehicles: Vehicle[] = [
         name: "Il-76 Candid",
         type: "Transport samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Il-76MD-90A_RF-78653.jpg/330px-Il-76MD-90A_RF-78653.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: uzFlag,
+        image: rasm2,
         shortDescription: "Strategik yuk tashish samolyoti",
         specifications: {
             manufacturer: "Ilyushin",
@@ -180,7 +210,9 @@ export const vehicles: Vehicle[] = [
         name: "Tu-154 Careless",
         type: "Yoʻlovchi samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Tupolev_Tu-154M%2C_Iran_Air_Tours_JP6511800.jpg/330px-Tupolev_Tu-154M%2C_Iran_Air_Tours_JP6511800.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: ruFlag,
+        image: rasm,
         shortDescription: "Uzoq masofali yoʻlovchi tashish samolyoti",
         specifications: {
             manufacturer: "Tupolev",
@@ -200,7 +232,9 @@ export const vehicles: Vehicle[] = [
         name: "Mi-8 Hip",
         type: "Transport vertolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Mil_Mi-8P%2C_Baltic_Airlines_%28cropped%29.jpg/330px-Mil_Mi-8P%2C_Baltic_Airlines_%28cropped%29.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: usFlag,
+        image: rasm2,
         shortDescription: "Koʻp maqsadli transport vertolyoti",
         specifications: {
             manufacturer: "Mil Moscow",
@@ -220,7 +254,9 @@ export const vehicles: Vehicle[] = [
         name: "Mi-24 Hind",
         type: "Hujum vertolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Mi24CP_%28modified%29_b.jpg/330px-Mi24CP_%28modified%29_b.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: uzFlag,
+        image: rasm,
         shortDescription: "Hujum va transport vertolyoti",
         specifications: {
             manufacturer: "Mil Moscow",
@@ -240,7 +276,9 @@ export const vehicles: Vehicle[] = [
         name: "Su-30 Flanker-C",
         type: "Qiruvchi samolyot",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Sukhoi_Su-30SM_in_flight_2014.jpg/330px-Sukhoi_Su-30SM_in_flight_2014.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: usFlag,
+        image: rasm2,
         shortDescription: "Koʻp maqsadli qiruvchi samolyot",
         specifications: {
             manufacturer: "Sukhoi",
@@ -260,7 +298,9 @@ export const vehicles: Vehicle[] = [
         name: "An-12 Cub",
         type: "Transport samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Antonov_An-12BK%2C_Russia_-_Air_Force_AN1879625.jpg/330px-Antonov_An-12BK%2C_Russia_-_Air_Force_AN1879625.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: ruFlag,
+        image: rasm,
         shortDescription: "Taktik yuk tashish samolyoti",
         specifications: {
             manufacturer: "Antonov",
@@ -280,7 +320,9 @@ export const vehicles: Vehicle[] = [
         name: "Yak-130 Mitten",
         type: "Oʻquv samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Yakovlev_Yak-_130_%28modify%29.jpg/330px-Yakovlev_Yak-_130_%28modify%29.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: usFlag,
+        image: rasm2,
         shortDescription: "Zamonaviy oʻquv va hujum samolyoti",
         specifications: {
             manufacturer: "Yakovlev",
@@ -300,7 +342,9 @@ export const vehicles: Vehicle[] = [
         name: "Be-200 Altair",
         type: "Amfibiya samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/MChS_Beriev_Be-200_waterbomber.jpg/330px-MChS_Beriev_Be-200_waterbomber.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: ruFlag,
+        image: rasm,
         shortDescription: "Koʻp maqsadli amfibiya samolyoti",
         specifications: {
             manufacturer: "Beriev",
@@ -321,7 +365,9 @@ export const vehicles: Vehicle[] = [
         name: "An-74 Cheburashka",
         type: "Transport samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Antonov-An-74.jpg/330px-Antonov-An-74.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: usFlag,
+        image: rasm2,
         shortDescription: "Qisqa uchish-qoʻnish yoʻlagi uchun moʻljallangan",
         specifications: {
             manufacturer: "Antonov",
@@ -341,7 +387,9 @@ export const vehicles: Vehicle[] = [
         name: "Su-24 Fencer",
         type: "Hujum samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Sukhoi_Su-24_inflight_Mishin-2.jpg/330px-Sukhoi_Su-24_inflight_Mishin-2.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: uzFlag,
+        image: rasm,
         shortDescription: "Front hujum samolyoti",
         specifications: {
             manufacturer: "Sukhoi",
@@ -361,7 +409,9 @@ export const vehicles: Vehicle[] = [
         name: "MiG-23 Flogger",
         type: "Qiruvchi samolyot",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Mig-23-DNST8908431_JPG.jpg/330px-Mig-23-DNST8908431_JPG.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: ruFlag,
+        image: rasm2,
         shortDescription: "Oʻzgaruvchan qanotli qiruvchi",
         specifications: {
             manufacturer: "Mikoyan",
@@ -381,7 +431,9 @@ export const vehicles: Vehicle[] = [
         name: "Tu-134 Crusty",
         type: "Yoʻlovchi samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Tretyakovo_Tupolev_Tu-134.jpg/330px-Tretyakovo_Tupolev_Tu-134.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: uzFlag,
+        image: rasm,
         shortDescription: "Qisqa masofali yoʻlovchi samolyoti",
         specifications: {
             manufacturer: "Tupolev",
@@ -401,7 +453,9 @@ export const vehicles: Vehicle[] = [
         name: "An-26 Curl",
         type: "Transport samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Mi24CP_%28modified%29_b.jpg/330px-Mi24CP_%28modified%29_b.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: usFlag,
+        image: rasm2,
         shortDescription: "Taktik yuk tashish samolyoti",
         specifications: {
             manufacturer: "Antonov",
@@ -421,7 +475,9 @@ export const vehicles: Vehicle[] = [
         name: "MiG-25 Foxbat",
         type: "Razvedka samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Sukhoi_Su-30SM_in_flight_2014.jpg/330px-Sukhoi_Su-30SM_in_flight_2014.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: ruFlag,
+        image: rasm,
         shortDescription: "Yuqori tezlikdagi razvedka samolyoti",
         specifications: {
             manufacturer: "Mikoyan",
@@ -441,7 +497,9 @@ export const vehicles: Vehicle[] = [
         name: "Su-17 Fitter",
         type: "Hujum samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/L-39ZA_Albatros_%28cropped%29.jpg/330px-L-39ZA_Albatros_%28cropped%29.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: ruFlag,
+        image: rasm2,
         shortDescription: "Oʻzgaruvchan qanotli hujum samolyoti",
         specifications: {
             manufacturer: "Sukhoi",
@@ -461,7 +519,9 @@ export const vehicles: Vehicle[] = [
         name: "Il-78 Midas",
         type: "Yoqilgʻi quyish samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Mi24CP_%28modified%29_b.jpg/330px-Mi24CP_%28modified%29_b.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: usFlag,
+        image: rasm,
         shortDescription: "Havo yoqilgʻi quyish samolyoti",
         specifications: {
             manufacturer: "Ilyushin",
@@ -481,7 +541,9 @@ export const vehicles: Vehicle[] = [
         name: "An-72 Coaler",
         type: "Transport samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Mi24CP_%28modified%29_b.jpg/330px-Mi24CP_%28modified%29_b.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: usFlag,
+        image: rasm2,
         shortDescription: "Qisqa uchish-qoʻnish yoʻlagi uchun moʻljallangan",
         specifications: {
             manufacturer: "Antonov",
@@ -501,7 +563,9 @@ export const vehicles: Vehicle[] = [
         name: "MiG-31 Foxhound",
         type: "Qiruvchi samolyot",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/L-39ZA_Albatros_%28cropped%29.jpg/330px-L-39ZA_Albatros_%28cropped%29.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: ruFlag,
+        image: rasm,
         shortDescription: "Uzoq masofali qiruvchi samolyot",
         specifications: {
             manufacturer: "Mikoyan",
@@ -521,7 +585,9 @@ export const vehicles: Vehicle[] = [
         name: "Ka-27 Helix",
         type: "Vertolyot",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Mi24CP_%28modified%29_b.jpg/330px-Mi24CP_%28modified%29_b.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: ruFlag,
+        image: rasm2,
         shortDescription: "Koaksial rotori vertolyoti",
         specifications: {
             manufacturer: "Kamov",
@@ -541,7 +607,9 @@ export const vehicles: Vehicle[] = [
         name: "Su-34 Fullback",
         type: "Hujum samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Sukhoi_Su-30SM_in_flight_2014.jpg/330px-Sukhoi_Su-30SM_in_flight_2014.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: usFlag,
+        image: rasm,
         shortDescription: "Front hujum samolyoti",
         specifications: {
             manufacturer: "Sukhoi",
@@ -561,7 +629,9 @@ export const vehicles: Vehicle[] = [
         name: "Yak-40 Codling",
         type: "Yoʻlovchi samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/L-39ZA_Albatros_%28cropped%29.jpg/330px-L-39ZA_Albatros_%28cropped%29.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: ruFlag,
+        image: rasm2,
         shortDescription: "Qisqa masofali yoʻlovchi samolyoti",
         specifications: {
             manufacturer: "Yakovlev",
@@ -581,7 +651,9 @@ export const vehicles: Vehicle[] = [
         name: "An-140",
         type: "Yoʻlovchi samolyoti",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Sukhoi_Su-30SM_in_flight_2014.jpg/330px-Sukhoi_Su-30SM_in_flight_2014.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: usFlag,
+        image: rasm,
         shortDescription: "Regional yoʻlovchi samolyoti",
         specifications: {
             manufacturer: "Antonov",
@@ -601,7 +673,9 @@ export const vehicles: Vehicle[] = [
         name: "MiG-29UB",
         type: "Oʻquv qiruvchi",
         country: "1",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/L-39ZA_Albatros_%28cropped%29.jpg/330px-L-39ZA_Albatros_%28cropped%29.jpg",
+        manufacturerCountry: "Rossiya",
+        manufacturerCountryFlag: usFlag,
+        image: rasm2,
         shortDescription: "Ikki oʻrinli oʻquv qiruvchi samolyoti",
         specifications: {
             manufacturer: "Mikoyan",

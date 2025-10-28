@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Vehicle, Country } from "../types";
+
 import {
     vehicles,
     countries,
@@ -15,6 +16,9 @@ const Ttxlar: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [filterType, setFilterType] = useState("all");
+    const [imageErrors, setImageErrors] = useState<{ [key: string]: boolean }>(
+        {}
+    );
 
     useEffect(() => {
         const uzbekistan = countries[0];
@@ -40,6 +44,10 @@ const Ttxlar: React.FC = () => {
         navigate(`/vehicle/${vehicle.id}`);
     };
 
+    const handleFlagError = (vehicleId: string) => {
+        setImageErrors((prev) => ({ ...prev, [vehicleId]: true }));
+    };
+
     const filteredVehiclesBySearch = filteredVehicles.filter(
         (vehicle) =>
             vehicle.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -60,32 +68,24 @@ const Ttxlar: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-            {/* Hero Section */}
-            <div className="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
-                <div className="absolute inset-0 bg-black/20"></div>
-                <div className="container mx-auto px-4 relative z-10">
-                    <div className="text-center">
-                        <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-                            O'zbekiston Havo Texnika Modellari
-                        </h1>
-                        <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-                            O'zbekiston Havo Kuchlarining 30 dan ortiq zamonaviy
-                            va tarixiy havo texnikalari to'plami
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Search and Filter Section */}
+            {/* Header Section */}
             <div className="bg-white/10 backdrop-blur-lg border-b border-white/20 sticky top-0 z-50">
-                <div className="container mx-auto px-4 py-6">
+                {/* Hero Section */}
+                <div className="text-start container mx-auto px-4 py-4">
+                    <h1 className="text-4xl font-bold mb-1 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+                        O'zbekiston Havo Texnika Modellari
+                    </h1>
+                </div>
+
+                {/* Search and Filter Section */}
+                <div className="container mx-auto px-4 pb-6">
                     <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
                         {/* Search Box */}
                         <div className="w-full lg:w-96">
                             <div className="relative">
                                 <input
                                     type="text"
-                                    placeholder="Texnika nomi, turi yoki ishlab chiqaruvchi bo'yicha qidirish..."
+                                    placeholder="Qidirish..."
                                     value={searchTerm}
                                     onChange={(e) =>
                                         setSearchTerm(e.target.value)
@@ -139,7 +139,7 @@ const Ttxlar: React.FC = () => {
                                     {filteredVehicles.length}
                                 </div>
                                 <div className="text-sm text-blue-200">
-                                    Jami Texnika
+                                    Jami
                                 </div>
                             </div>
                             <div className="text-center">
@@ -169,7 +169,7 @@ const Ttxlar: React.FC = () => {
                 </div>
             </div>
 
-            {/* Vehicles Grid */}
+            {/* Main Content */}
             <div className="container mx-auto px-4 py-8">
                 {isLoading ? (
                     <div className="flex justify-center items-center py-20">
@@ -182,7 +182,7 @@ const Ttxlar: React.FC = () => {
                     </div>
                 ) : (
                     <>
-                        {/* Results Count and Active Filters */}
+                        {/* Results Header */}
                         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4">
                             <div className="text-white">
                                 <div className="text-lg">
@@ -206,7 +206,7 @@ const Ttxlar: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Active Filters Badges */}
+                            {/* Active Filters */}
                             <div className="flex flex-wrap gap-2">
                                 {searchTerm && (
                                     <div className="bg-blue-500/20 border border-blue-500/30 text-blue-300 px-3 py-1 rounded-full text-sm flex items-center gap-2">
@@ -242,54 +242,74 @@ const Ttxlar: React.FC = () => {
                                         onClick={() =>
                                             handleVehicleClick(vehicle)
                                         }
-                                        className="group bg-white/5 backdrop-blur-lg rounded-2xl overflow-hidden hover:bg-white/10 transition-all duration-500 transform hover:-translate-y-2 cursor-pointer border border-white/10 hover:border-blue-400/30 relative"
+                                        className="group bg-white/5 backdrop-blur-lg rounded-2xl overflow-hidden hover:bg-white/10 transition-all duration-500 transform hover:-translate-y-2 cursor-pointer border border-white/10 hover:border-blue-400/30 relative flex flex-col h-full"
                                     >
-                                        {/* Status Badge */}
-                                        <div
-                                            className={`absolute top-4 right-4 z-10 px-3 py-1 rounded-full text-xs font-semibold ${
-                                                vehicle.specifications
-                                                    .status === "Faol"
-                                                    ? "bg-green-500/90 text-white"
-                                                    : vehicle.specifications
-                                                          .status === "Zaxirada"
-                                                    ? "bg-yellow-500/90 text-white"
-                                                    : "bg-gray-500/90 text-white"
-                                            }`}
-                                        >
-                                            {vehicle.specifications.status}
+                                        {/* Manufacturer Country Flag */}
+                                        <div className="absolute top-4 right-4 z-10">
+                                            <div className="w-10 h-7 rounded-md overflow-hidden shadow-lg border border-white/20 bg-white">
+                                                {imageErrors[vehicle.id] ? (
+                                                    <div className="w-full h-full flex items-center justify-center bg-blue-500 text-white text-xs font-bold">
+                                                        {vehicle.manufacturerCountry
+                                                            ?.substring(0, 3)
+                                                            .toUpperCase() ||
+                                                            "FLAG"}
+                                                    </div>
+                                                ) : (
+                                                    <img
+                                                        src={
+                                                            vehicle.manufacturerCountryFlag
+                                                        }
+                                                        alt={
+                                                            vehicle.manufacturerCountry
+                                                        }
+                                                        className="w-full h-full object-cover"
+                                                        onError={() =>
+                                                            handleFlagError(
+                                                                vehicle.id
+                                                            )
+                                                        }
+                                                    />
+                                                )}
+                                            </div>
                                         </div>
 
-                                        {/* Image */}
-                                        <div className="h-48 bg-gradient-to-br from-blue-400 to-blue-600 relative overflow-hidden">
-                                            <img
-                                                src={vehicle.image}
-                                                alt={vehicle.name}
-                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                                onError={(e) => {
-                                                    e.currentTarget.src = `https://via.placeholder.com/400x300/1e3a8a/ffffff?text=${encodeURIComponent(
-                                                        vehicle.name
-                                                    )}`;
-                                                }}
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                                        {/* Image Section */}
+                                        <div className="h-48 bg-gradient-to-br from-blue-500 to-blue-600 relative overflow-hidden flex-shrink-0">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-blue-500 to-blue-600"></div>
+                                            <div className="relative w-full h-full flex items-center justify-center p-4">
+                                                <img
+                                                    src={vehicle.image}
+                                                    alt={vehicle.name}
+                                                    className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-lg"
+                                                    onError={(e) => {
+                                                        e.currentTarget.src = `https://via.placeholder.com/400x300/1e3a8a/ffffff?text=${encodeURIComponent(
+                                                            vehicle.name
+                                                        )}`;
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                                             <div className="absolute bottom-4 left-4">
-                                                <span className="bg-blue-600/90 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                                <span className="bg-blue-600/90 text-white px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm">
                                                     {vehicle.type}
                                                 </span>
                                             </div>
                                         </div>
 
-                                        {/* Content */}
-                                        <div className="p-5">
-                                            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors">
-                                                {vehicle.name}
-                                            </h3>
-                                            <p className="text-blue-200 text-sm mb-4 line-clamp-2">
-                                                {vehicle.shortDescription}
-                                            </p>
+                                        {/* Content Section - flex-grow bilan qolgan joyni egallaydi */}
+                                        <div className="p-5 flex flex-col flex-grow">
+                                            {/* Title and Description */}
+                                            <div className="mb-4">
+                                                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors line-clamp-1">
+                                                    {vehicle.name}
+                                                </h3>
+                                                <p className="text-blue-200 text-sm line-clamp-2">
+                                                    {vehicle.shortDescription}
+                                                </p>
+                                            </div>
 
-                                            {/* Quick Specs */}
-                                            <div className="space-y-3">
+                                            {/* Specifications - flex-grow bilan qolgan joyni egallaydi */}
+                                            <div className="space-y-3 flex-grow">
                                                 <div className="flex justify-between items-center">
                                                     <span className="text-blue-300 text-sm">
                                                         Ishlab chiqaruvchi:
@@ -326,52 +346,55 @@ const Ttxlar: React.FC = () => {
                                                         }
                                                     </span>
                                                 </div>
+
+                                                {/* Additional Specs */}
+                                                {(vehicle.specifications
+                                                    .maxSpeed ||
+                                                    vehicle.specifications
+                                                        .range) && (
+                                                    <div className="mt-4 pt-4 border-t border-white/10">
+                                                        <div className="flex justify-between text-xs">
+                                                            {vehicle
+                                                                .specifications
+                                                                .maxSpeed && (
+                                                                <div className="text-center">
+                                                                    <div className="text-blue-300">
+                                                                        Tezlik
+                                                                    </div>
+                                                                    <div className="text-white font-semibold">
+                                                                        {
+                                                                            vehicle
+                                                                                .specifications
+                                                                                .maxSpeed
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                            {vehicle
+                                                                .specifications
+                                                                .range && (
+                                                                <div className="text-center">
+                                                                    <div className="text-blue-300">
+                                                                        Masofa
+                                                                    </div>
+                                                                    <div className="text-white font-semibold">
+                                                                        {
+                                                                            vehicle
+                                                                                .specifications
+                                                                                .range
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
 
-                                            {/* Additional Specs */}
-                                            {(vehicle.specifications.maxSpeed ||
-                                                vehicle.specifications
-                                                    .range) && (
-                                                <div className="mt-4 pt-4 border-t border-white/10">
-                                                    <div className="flex justify-between text-xs">
-                                                        {vehicle.specifications
-                                                            .maxSpeed && (
-                                                            <div className="text-center">
-                                                                <div className="text-blue-300">
-                                                                    Maks. Tezlik
-                                                                </div>
-                                                                <div className="text-white font-semibold">
-                                                                    {
-                                                                        vehicle
-                                                                            .specifications
-                                                                            .maxSpeed
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                        {vehicle.specifications
-                                                            .range && (
-                                                            <div className="text-center">
-                                                                <div className="text-blue-300">
-                                                                    Maks. Masofa
-                                                                </div>
-                                                                <div className="text-white font-semibold">
-                                                                    {
-                                                                        vehicle
-                                                                            .specifications
-                                                                            .range
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            {/* View Details Button */}
+                                            {/* View Details Button - har doim pastda */}
                                             <div className="mt-4 pt-4 border-t border-white/10">
                                                 <button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-3 px-4 rounded-xl transition-all duration-300 font-semibold group-hover:shadow-lg group-hover:shadow-blue-500/25 flex items-center justify-center gap-2">
-                                                    Batafsil ko'rish
+                                                    Batafsil
                                                     <svg
                                                         className="w-4 h-4 group-hover:translate-x-1 transition-transform"
                                                         fill="none"
@@ -420,19 +443,6 @@ const Ttxlar: React.FC = () => {
                                 )}
                             </div>
                         )}
-
-                        {/* Load More Button (for future pagination) */}
-                        {filteredByType.length > 0 &&
-                            filteredByType.length < filteredVehicles.length && (
-                                <div className="text-center mt-12">
-                                    <button className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-8 py-4 rounded-xl transition-all duration-300 font-semibold hover:scale-105">
-                                        Ko'proq ko'rsatish (
-                                        {filteredVehicles.length -
-                                            filteredByType.length}{" "}
-                                        ta qolgan)
-                                    </button>
-                                </div>
-                            )}
                     </>
                 )}
             </div>
