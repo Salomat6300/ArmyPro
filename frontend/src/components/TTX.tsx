@@ -1,15 +1,153 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { vehicles } from "C:/Users/fuugo/Desktop/ArmyPro/frontend/data/BazaTTX";
 import type { Vehicle } from "../types";
+
+// Icon fayllarini import qilish
+import manufacturerIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/planets_1146244.png";
+import firstFlightIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/chocolate_3200373.png";
+import primaryUserIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/ice-cream_894942.png";
+import crewIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/planets_1146244.png";
+import lengthIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/chocolate_3200373.png";
+import wingspanIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/ice-cream_894942.png";
+import heightIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/planets_1146244.png";
+import maxSpeedIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/chocolate_3200373.png";
+import rangeIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/ice-cream_894942.png";
+import engineIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/chocolate_3200373.png";
+import statusIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/ice-cream_894942.png";
+import emptyWeightIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/planets_1146244.png";
+import maxTakeoffWeightIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/planets_1146244.png";
+import fuelCapacityIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/ice-cream_894942.png";
+import serviceCeilingIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/chocolate_3200373.png";
+import cruiseSpeedIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/ice-cream_894942.png";
+import thrustIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/planets_1146244.png";
+import powerIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/ice-cream_894942.png";
+import armamentIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/chocolate_3200373.png";
+import productionYearsIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/chocolate_3200373.png";
+import numberBuiltIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/ice-cream_894942.png";
+import wingAreaIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/planets_1146244.png";
+import serviceIntervalIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/chocolate_3200373.png";
+import weightIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/chocolate_3200373.png";
+import speedIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/planets_1146244.png";
+import altitudeIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/chocolate_3200373.png";
+import capacityIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/ice-cream_894942.png";
+import systemIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/chocolate_3200373.png";
+import equipmentIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/ice-cream_894942.png";
+import featuresIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/chocolate_3200373.png";
+import performanceIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/planets_1146244.png";
+import defaultIcon from "C:/Users/fuugo/Desktop/ArmyPro/frontend/public/images/ice-cream_894942.png";
 
 const VehicleDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const [isImageModalOpen, setIsImageModalOpen] = useState(false);
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+    const [columns, setColumns] = useState<any[][]>([]);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const vehicle: Vehicle | undefined = vehicles.find((v) => v.id === id);
+
+    // Bazadagi barcha xususiyatlarni olish
+    const getAllSpecifications = () => {
+        if (!vehicle) return [];
+        const specs = [];
+        for (const [key, value] of Object.entries(vehicle.specifications)) {
+            if (value && value !== "" && value !== "Noma'lum") {
+                specs.push({ key, value });
+            }
+        }
+        return specs;
+    };
+
+    const allSpecs = getAllSpecifications();
+
+    // Har bir kalit uchun mos icon ni aniqlash
+    const getIcon = (key: string) => {
+        const iconMap: { [key: string]: string } = {
+            manufacturer: manufacturerIcon,
+            firstFlight: firstFlightIcon,
+            primaryUser: primaryUserIcon,
+            crew: crewIcon,
+            length: lengthIcon,
+            wingspan: wingspanIcon,
+            height: heightIcon,
+            maxSpeed: maxSpeedIcon,
+            range: rangeIcon,
+            engine: engineIcon,
+            status: statusIcon,
+            emptyWeight: emptyWeightIcon,
+            maxTakeoffWeight: maxTakeoffWeightIcon,
+            fuelCapacity: fuelCapacityIcon,
+            serviceCeiling: serviceCeilingIcon,
+            cruiseSpeed: cruiseSpeedIcon,
+            thrust: thrustIcon,
+            power: powerIcon,
+            armament: armamentIcon,
+            productionYears: productionYearsIcon,
+            numberBuilt: numberBuiltIcon,
+            wingArea: wingAreaIcon,
+            serviceInterval: serviceIntervalIcon,
+            weight: weightIcon,
+            speed: speedIcon,
+            altitude: altitudeIcon,
+            capacity: capacityIcon,
+            system: systemIcon,
+            equipment: equipmentIcon,
+            features: featuresIcon,
+            performance: performanceIcon,
+        };
+        return iconMap[key] || defaultIcon;
+    };
+
+    // Balandlik asosida ustunlarni hisoblash
+    const calculateColumns = () => {
+        if (!containerRef.current || allSpecs.length === 0) return;
+
+        const container = containerRef.current;
+        const maxItemsPerColumn = 8;
+
+        const newColumns: any[][] = [];
+        let currentColumn: any[] = [];
+
+        allSpecs.forEach((spec, index) => {
+            currentColumn.push(spec);
+
+            if (
+                currentColumn.length >= maxItemsPerColumn ||
+                index === allSpecs.length - 1
+            ) {
+                newColumns.push([...currentColumn]);
+                currentColumn = [];
+            }
+        });
+
+        setColumns(newColumns);
+    };
+
+    useEffect(() => {
+        calculateColumns();
+
+        const handleResize = () => {
+            calculateColumns();
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, [allSpecs]);
+
+    useEffect(() => {
+        const resizeObserver = new ResizeObserver(() => {
+            calculateColumns();
+        });
+
+        if (containerRef.current) {
+            resizeObserver.observe(containerRef.current);
+        }
+
+        return () => {
+            resizeObserver.disconnect();
+        };
+    }, []);
 
     if (!vehicle) {
         return (
@@ -33,113 +171,184 @@ const VehicleDetail: React.FC = () => {
         try {
             setIsGeneratingPDF(true);
 
-            // Dinamik import
             const html2canvas = (await import("html2canvas")).default;
             const jsPDF = (await import("jspdf")).default;
 
-            // PDF uchun maxsus element yaratish
             const pdfContainer = document.createElement("div");
             pdfContainer.style.position = "fixed";
             pdfContainer.style.left = "-9999px";
             pdfContainer.style.top = "0";
-            pdfContainer.style.width = "794px"; // A4 width in pixels
+            pdfContainer.style.width = "794px";
             pdfContainer.style.backgroundColor = "white";
             pdfContainer.style.padding = "20px";
             pdfContainer.style.zIndex = "9999";
 
-            // TTT larni 2 ustunga bo'lish
-            const allSpecs = getAllSpecifications();
-            const midIndex = Math.ceil(allSpecs.length / 2);
-            const leftColumnSpecs = allSpecs.slice(0, midIndex);
-            const rightColumnSpecs = allSpecs.slice(midIndex);
+            const loadImageAsBase64 = (url: string): Promise<string> => {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.crossOrigin = "Anonymous";
+                    img.onload = () => {
+                        const canvas = document.createElement("canvas");
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext("2d");
+                        ctx?.drawImage(img, 0, 0);
+                        resolve(canvas.toDataURL("image/jpeg"));
+                    };
+                    img.onerror = reject;
+                    img.src = url;
+                });
+            };
+
+            let vehicleImageBase64 = "";
+            try {
+                vehicleImageBase64 = await loadImageAsBase64(vehicle.image);
+            } catch (error) {
+                console.error(
+                    "Rasm yuklanmadi, placeholder ishlatiladi:",
+                    error
+                );
+                const canvas = document.createElement("canvas");
+                canvas.width = 400;
+                canvas.height = 300;
+                const ctx = canvas.getContext("2d");
+                if (ctx) {
+                    ctx.fillStyle = "#1e3a8a";
+                    ctx.fillRect(0, 0, 400, 300);
+                    ctx.fillStyle = "#ffffff";
+                    ctx.font = "20px Arial";
+                    ctx.textAlign = "center";
+                    ctx.fillText(vehicle.name, 200, 150);
+                }
+                vehicleImageBase64 = canvas.toDataURL("image/jpeg");
+            }
+
+            // PDF uchun TTT larni 3 ustunga bo'lish
+            const specsPerColumn = Math.ceil(allSpecs.length / 3);
+            const column1Specs = allSpecs.slice(0, specsPerColumn);
+            const column2Specs = allSpecs.slice(
+                specsPerColumn,
+                specsPerColumn * 2
+            );
+            const column3Specs = allSpecs.slice(specsPerColumn * 2);
 
             // PDF kontentini yaratish
             pdfContainer.innerHTML = `
-                <div style="font-family: Arial, sans-serif; color: #333;">
-                    <!-- Sarlavha -->
-                    <div style="text-align: center; margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, #1e40af, #1e3a8a); color: white; border-radius: 10px;">
-                        <h1 style="font-size: 32px; margin: 0 0 10px 0; font-weight: bold;">${
+            <div style="font-family: Arial, sans-serif; color: #333;">
+                <!-- Sarlavha va rasm -->
+                <div style="display: grid; grid-template-columns: 200px 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+                    <!-- Rasm -->
+                    <div style="text-align: center;">
+                        <img 
+                            src="${vehicleImageBase64}" 
+                            alt="${vehicle.name}" 
+                            style="width: 180px; height: 135px; object-fit: contain; border: 2px solid #e5e7eb; border-radius: 8px; background: #f8fafc;"
+                        />
+                        <div style="margin-top: 8px; font-size: 12px; color: #6b7280;">
+                            ${vehicle.type}
+                        </div>
+                    </div>
+                    
+                    <!-- Texnika ma'lumotlari -->
+                    <div style="padding: 15px; background: linear-gradient(135deg, #1e40af, #1e3a8a); color: white; border-radius: 10px;">
+                        <h1 style="font-size: 28px; margin: 0 0 10px 0; font-weight: bold;">${
                             vehicle.name
                         }</h1>
-                        <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 10px;">
-                            <span style="background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; font-size: 14px;">
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
+                            <span style="background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 15px; font-size: 12px;">
                                 ${vehicle.type}
                             </span>
                             <span style="background: ${
                                 vehicle.specifications.status === "Faol"
                                     ? "#10b981"
                                     : "#f59e0b"
-                            }; padding: 8px 16px; border-radius: 20px; font-size: 14px;">
+                            }; padding: 6px 12px; border-radius: 15px; font-size: 12px;">
                                 ${vehicle.specifications.status}
                             </span>
                         </div>
-                        <p style="font-size: 18px; margin: 0; opacity: 0.9;">${
+                        <p style="font-size: 16px; margin: 0; opacity: 0.9; line-height: 1.4;">${
                             vehicle.shortDescription
                         }</p>
                     </div>
+                </div>
 
-                    <!-- Taktik-Texnik Tavsif -->
-                    <div style="margin-bottom: 30px;">
-                        <h2 style="font-size: 24px; color: #1e40af; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
-                            📋 Taktik-Texnik Tavsif (TTT)
-                        </h2>
+                <!-- Taktik-Texnik Tavsif -->
+                <div style="margin-bottom: 30px;">
+                    <h2 style="font-size: 22px; color: #1e40af; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">
+                        📋 Taktik-Texnik Tavsif (TTT)
+                    </h2>
+                    
+                    <!-- 3 ustunli grid -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                        <!-- 1-ustun -->
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            ${column1Specs
+                                .map(
+                                    (spec) => `
+                                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; min-height: 60px; display: flex; flex-direction: column; justify-content: center;">
+                                    <div style="font-size: 10px; color: #1e40af; font-weight: bold; margin-bottom: 4px; text-transform: uppercase; line-height: 1.2;">
+                                        ${formatSpecKey(spec.key)}
+                                    </div>
+                                    <div style="font-size: 13px; color: #1f2937; font-weight: bold; line-height: 1.2;">
+                                        ${spec.value}
+                                    </div>
+                                </div>
+                            `
+                                )
+                                .join("")}
+                        </div>
                         
-                        <!-- 2 ustunli grid -->
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <!-- Chap ustun -->
-                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                ${leftColumnSpecs
-                                    .map(
-                                        (spec, index) => `
-                                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px;">
-                                        <div style="font-size: 12px; color: #1e40af; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;">
-                                            ${formatSpecKey(spec.key)}
-                                        </div>
-                                        <div style="font-size: 16px; color: #1f2937; font-weight: bold;">
-                                            ${spec.value}
-                                        </div>
+                        <!-- 2-ustun -->
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            ${column2Specs
+                                .map(
+                                    (spec) => `
+                                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; min-height: 60px; display: flex; flex-direction: column; justify-content: center;">
+                                    <div style="font-size: 10px; color: #1e40af; font-weight: bold; margin-bottom: 4px; text-transform: uppercase; line-height: 1.2;">
+                                        ${formatSpecKey(spec.key)}
                                     </div>
-                                `
-                                    )
-                                    .join("")}
-                            </div>
-                            
-                            <!-- O'ng ustun -->
-                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                ${rightColumnSpecs
-                                    .map(
-                                        (spec, index) => `
-                                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px;">
-                                        <div style="font-size: 12px; color: #1e40af; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;">
-                                            ${formatSpecKey(spec.key)}
-                                        </div>
-                                        <div style="font-size: 16px; color: #1f2937; font-weight: bold;">
-                                            ${spec.value}
-                                        </div>
+                                    <div style="font-size: 13px; color: #1f2937; font-weight: bold; line-height: 1.2;">
+                                        ${spec.value}
                                     </div>
-                                `
-                                    )
-                                    .join("")}
-                            </div>
+                                </div>
+                            `
+                                )
+                                .join("")}
+                        </div>
+
+                        <!-- 3-ustun -->
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            ${column3Specs
+                                .map(
+                                    (spec) => `
+                                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; min-height: 60px; display: flex; flex-direction: column; justify-content: center;">
+                                    <div style="font-size: 10px; color: #1e40af; font-weight: bold; margin-bottom: 4px; text-transform: uppercase; line-height: 1.2;">
+                                        ${formatSpecKey(spec.key)}
+                                    </div>
+                                    <div style="font-size: 13px; color: #1f2937; font-weight: bold; line-height: 1.2;">
+                                        ${spec.value}
+                                    </div>
+                                </div>
+                            `
+                                )
+                                .join("")}
                         </div>
                     </div>
-
-                    <!-- Footer -->
-                    <div style="border-top: 2px solid #e5e7eb; padding-top: 20px; text-align: center; color: #6b7280; font-size: 12px;">
-                        <p>Ma'lumotlar yangilangan: ${new Date().toLocaleDateString(
-                            "uz-UZ"
-                        )}</p>
-                        <p>Hujjat ID: ${
-                            vehicle.id
-                        } | © ${new Date().getFullYear()} O'zbekiston Havo Kuchlari</p>
-                    </div>
                 </div>
-            `;
 
-            // DOM ga qo'shish
+                <!-- Footer -->
+                <div style="border-top: 2px solid #e5e7eb; padding-top: 15px; text-align: center; color: #6b7280; font-size: 11px;">
+                    <p>Ma'lumotlar yangilangan: ${new Date().toLocaleDateString(
+                        "uz-UZ"
+                    )}</p>
+                    <p>Hujjat ID: ${
+                        vehicle.id
+                    } | © ${new Date().getFullYear()} O'zbekiston Havo Kuchlari</p>
+                </div>
+            </div>
+        `;
+
             document.body.appendChild(pdfContainer);
-
-            // Canvas yaratish
             const canvas = await html2canvas(pdfContainer, {
                 scale: 2,
                 useCORS: true,
@@ -149,7 +358,6 @@ const VehicleDetail: React.FC = () => {
                 height: pdfContainer.scrollHeight,
             });
 
-            // PDF yaratish
             const imgData = canvas.toDataURL("image/jpeg", 1.0);
             const pdf = new jsPDF({
                 orientation: "portrait",
@@ -159,28 +367,20 @@ const VehicleDetail: React.FC = () => {
 
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
-
             const imgWidth = canvas.width;
             const imgHeight = canvas.height;
-
             const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
             const imgX = (pdfWidth - imgWidth * ratio) / 2;
-            const imgY = 10;
 
-            // Rasmni PDF ga qo'shish
             pdf.addImage(
                 imgData,
                 "JPEG",
                 imgX,
-                imgY,
+                0,
                 imgWidth * ratio,
                 imgHeight * ratio
             );
-
-            // PDF ni yuklab olish
             pdf.save(`${vehicle.name}_taktik_texnik_tavsif.pdf`);
-
-            // Tozalash
             document.body.removeChild(pdfContainer);
         } catch (error) {
             console.error("PDF yaratishda xatolik:", error);
@@ -192,29 +392,11 @@ const VehicleDetail: React.FC = () => {
         }
     };
 
-    // Bazadagi barcha xususiyatlarni olish
-    const getAllSpecifications = () => {
-        const specs = [];
-        for (const [key, value] of Object.entries(vehicle.specifications)) {
-            if (value && value !== "" && value !== "Noma'lum") {
-                specs.push({ key, value });
-            }
-        }
-        return specs;
-    };
-
-    const allSpecs = getAllSpecifications();
-
-    // Ekranda ham 2 ustunli ko'rinish uchun
-    const midIndex = Math.ceil(allSpecs.length / 2);
-    const leftColumnSpecs = allSpecs.slice(0, midIndex);
-    const rightColumnSpecs = allSpecs.slice(midIndex);
-
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
             {/* Rasm Modal */}
             {isImageModalOpen && (
-                <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 z-50 flex items-center justify-center p-4">
                     <div className="relative max-w-6xl max-h-full">
                         <button
                             onClick={() => setIsImageModalOpen(false)}
@@ -246,7 +428,7 @@ const VehicleDetail: React.FC = () => {
                 </div>
             )}
 
-            {/* Soddalashtirilgan Header */}
+            {/* Header */}
             <div className="container mx-auto px-4 py-4">
                 <div className="flex items-center justify-between mb-6">
                     <button
@@ -303,22 +485,15 @@ const VehicleDetail: React.FC = () => {
 
             <div className="container mx-auto px-4 pb-8">
                 <div className="max-w-[95vw] mx-auto">
-                    {" "}
-                    {/* Kengaytirilgan maksimal kenglik */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        {" "}
-                        {/* 12 ustunli grid */}
-                        {/* Chap tomonda - Rasm va funksiyalar */}
-                        <div className="lg:col-span-3">
-                            {" "}
-                            {/* 3/12 qismi */}
+                    <div className="flex gap-6">
+                        {/* CHAP TOMON: Rasm va asosiy ma'lumotlar */}
+                        <div className="w-80 flex-shrink-0">
                             <div className="bg-white/5 rounded-2xl border border-white/10 overflow-hidden sticky top-4">
-                                {/* Kichik rasm */}
                                 <div className="relative bg-gradient-to-br from-blue-600/20 to-blue-800/20">
                                     <img
                                         src={vehicle.image}
                                         alt={vehicle.name}
-                                        className="w-full h-48 object-contain cursor-pointer p-4"
+                                        className="w-full h-64 object-contain cursor-pointer p-4"
                                         onClick={() =>
                                             setIsImageModalOpen(true)
                                         }
@@ -330,10 +505,10 @@ const VehicleDetail: React.FC = () => {
                                         onClick={() =>
                                             setIsImageModalOpen(true)
                                         }
-                                        className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white p-1.5 rounded transition-colors backdrop-blur-sm border border-white/20"
+                                        className="absolute top-3 right-3 bg-black/50 hover:bg-black/70 text-white p-2 rounded-lg transition-colors backdrop-blur-sm border border-white/20"
                                     >
                                         <svg
-                                            className="w-4 h-4"
+                                            className="w-5 h-5"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"
@@ -348,17 +523,16 @@ const VehicleDetail: React.FC = () => {
                                     </button>
                                 </div>
 
-                                {/* Asosiy ma'lumotlar */}
-                                <div className="p-4">
-                                    <h1 className="text-xl font-bold text-white mb-2">
+                                <div className="p-5">
+                                    <h1 className="text-2xl font-bold text-white mb-3">
                                         {vehicle.name}
                                     </h1>
                                     <div className="flex items-center gap-2 mb-3">
-                                        <span className="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                                        <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
                                             {vehicle.type}
                                         </span>
                                         <span
-                                            className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                            className={`px-3 py-1 rounded-full text-sm font-semibold ${
                                                 vehicle.specifications
                                                     .status === "Faol"
                                                     ? "bg-green-500 text-white"
@@ -368,27 +542,26 @@ const VehicleDetail: React.FC = () => {
                                             {vehicle.specifications.status}
                                         </span>
                                     </div>
-                                    <p className="text-blue-200 text-sm mb-4">
+                                    <p className="text-blue-200 text-base leading-relaxed">
                                         {vehicle.shortDescription}
                                     </p>
                                 </div>
 
-                                {/* Rasm tagidagi funksiyalar */}
-                                <div className="p-4 border-t border-white/10 space-y-3">
+                                {/* <div className="p-5 border-t border-white/10 space-y-3">
                                     <button
                                         onClick={handleDownloadPDF}
                                         disabled={isGeneratingPDF}
-                                        className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white py-2 px-3 rounded-lg transition-colors font-semibold flex items-center justify-center gap-2 text-sm"
+                                        className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white py-3 px-4 rounded-lg transition-colors font-semibold flex items-center justify-center gap-2"
                                     >
                                         {isGeneratingPDF ? (
                                             <>
-                                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                                                 Yaratilmoqda...
                                             </>
                                         ) : (
                                             <>
                                                 <svg
-                                                    className="w-4 h-4"
+                                                    className="w-5 h-5"
                                                     fill="none"
                                                     stroke="currentColor"
                                                     viewBox="0 0 24 24"
@@ -404,103 +577,87 @@ const VehicleDetail: React.FC = () => {
                                             </>
                                         )}
                                     </button>
-
-                                    <button
-                                        onClick={() =>
-                                            setIsImageModalOpen(true)
-                                        }
-                                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded-lg transition-colors font-semibold flex items-center justify-center gap-2 text-sm"
-                                    >
-                                        <svg
-                                            className="w-4 h-4"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3-3H7"
-                                            />
-                                        </svg>
-                                        Rasmni kattalashtirish
-                                    </button>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
-                        {/* O'ng tomonda - Barcha TTT lar (KENGAYTIRILGAN) */}
-                        <div className="lg:col-span-9">
-                            {" "}
-                            {/* 9/12 qismi - kengaytirilgan */}
-                            <div className="bg-white/5 rounded-2xl border border-white/10 overflow-hidden w-full">
-                                <div className="p-6 border-b border-white/10">
-                                    <h2 className="text-3xl font-bold text-white mb-2">
-                                        📋 Taktik-Texnik Tavsif (TTT)
-                                    </h2>
-                                    <p className="text-blue-200 text-lg">
-                                        {vehicle.name} - Barcha texnik
-                                        xususiyatlar
-                                    </p>
-                                </div>
 
-                                <div className="p-6">
-                                    {/* 2 ustunli grid - Barcha texnik xususiyatlar (KENG) */}
-                                    <div className="grid grid-cols-1 xl:grid-cols-1 gap-2 w-full">
-                                        {/* Chap ustun */}
-                                        <div className="space-y-2">
-                                            {leftColumnSpecs.map(
-                                                (spec, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className="flex items-center justify-between p-2 bg-white/5 rounded-xl border border-white/10 hover:border-blue-400/30 transition-all duration-300 hover:bg-white/10 w-full"
-                                                    >
-                                                        <div className="text-blue-300 font-medium text-lg flex-1">
-                                                            {formatSpecKey(
-                                                                spec.key
-                                                            )}
-                                                        </div>
-                                                        <div className="text-white font-semibold text-lg text-right flex-1">
-                                                            {spec.value}
-                                                        </div>
-                                                    </div>
-                                                )
-                                            )}
-                                        </div>
+                        {/* O'NG TOMON: TTT lar (iconlar bilan) */}
+                        <div className="flex-1 min-w-0">
+                            <div className="bg-white/5 rounded-2xl border border-white/10 p-4 h-[80vh] flex flex-col">
+                                <h2 className="text-xl font-bold text-white mb-6 text-center flex-shrink-0">
+                                    📋 Taktik-Texnik Tavsif (TTT)
+                                </h2>
 
-                                        {/* O'ng ustun */}
-                                        <div className="space-y-2">
-                                            {rightColumnSpecs.map(
-                                                (spec, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className="flex items-center justify-between p-2 bg-white/5 rounded-xl border border-white/10 hover:border-blue-400/30 transition-all duration-300 hover:bg-white/10 w-full"
-                                                    >
-                                                        <div className="text-blue-300 font-medium text-lg flex-1">
-                                                            {formatSpecKey(
-                                                                spec.key
-                                                            )}
-                                                        </div>
-                                                        <div className="text-white font-semibold text-lg text-right flex-1">
-                                                            {spec.value}
-                                                        </div>
-                                                    </div>
-                                                )
-                                            )}
-                                        </div>
-                                    </div>
+                                {/* Gorizontal scroll qiladigan TTT lar */}
+                                <div
+                                    ref={containerRef}
+                                    className="overflow-x-auto flex-1"
+                                >
+                                    <div className="flex gap-3 min-w-max h-full">
+                                        {columns.map((column, columnIndex) => (
+                                            <div
+                                                key={columnIndex}
+                                                className="w-90 flex-shrink-0"
+                                            >
+                                                <div className="space-y-2">
+                                                    {column.map(
+                                                        (spec, index) => (
+                                                            <div
+                                                                key={index}
+                                                                className="bg-white/5 rounded-xl border border-white/10 hover:border-blue-400/30 transition-all duration-300 hover:bg-white/10 p-3 min-h-[65px] flex items-center gap-3 group"
+                                                            >
+                                                                {/* Icon qismi */}
+                                                                <div className="flex-shrink-0 w-10 h-10 bg-blue-600/20 rounded-lg flex items-center justify-center overflow-hidden backdrop-blur-sm border border-white/10">
+                                                                    <img
+                                                                        src={getIcon(
+                                                                            spec.key
+                                                                        )}
+                                                                        alt={formatSpecKey(
+                                                                            spec.key
+                                                                        )}
+                                                                        className="w-6 h-6 object-contain"
+                                                                        onError={(
+                                                                            e
+                                                                        ) => {
+                                                                            // Agar rasm yuklanmasa, default icon yoki emoji ishlatish
+                                                                            e.currentTarget.style.display =
+                                                                                "none";
+                                                                            const fallback =
+                                                                                document.createElement(
+                                                                                    "div"
+                                                                                );
+                                                                            fallback.className =
+                                                                                "text-lg";
+                                                                            fallback.textContent =
+                                                                                "📋";
+                                                                            e.currentTarget.parentNode?.appendChild(
+                                                                                fallback
+                                                                            );
+                                                                        }}
+                                                                    />
+                                                                </div>
 
-                                    {/* Izohlar */}
-                                    <div className="mt-8 pt-6 border-t border-white/10">
-                                        <div className="flex justify-between items-center text-sm text-blue-300">
-                                            <div>
-                                                Ma'lumotlar yangilangan:{" "}
-                                                {new Date().toLocaleDateString(
-                                                    "uz-UZ"
-                                                )}
+                                                                {/* Matn qismi */}
+                                                                <div className="flex-1 min-w-0">
+                                                                    <div className="grid grid-cols-2 gap-4 items-center">
+                                                                        <div className="text-blue-300 font-semibold text-xs uppercase tracking-wider leading-tight">
+                                                                            {formatSpecKey(
+                                                                                spec.key
+                                                                            )}
+                                                                        </div>
+                                                                        <div className="text-white font-bold text-sm leading-tight text-right whitespace-normal">
+                                                                            {
+                                                                                spec.value
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    )}
+                                                </div>
                                             </div>
-                                            <div>Hujjat ID: {vehicle.id}</div>
-                                        </div>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
