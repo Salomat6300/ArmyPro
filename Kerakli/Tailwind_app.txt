@@ -1,0 +1,12 @@
+1) Node.js o'rnatilgan bo'lishi kerak
+2) yarn add leaflet   	-> xarita uchun
+3) yarn add react-leaflet  -> xarita uchun
+npm install lucide-react  -> solishtirish page uchun
+
+npm install jspdf html2canvas --legacy-peer-deps  -> pdf uchun
+
+pipenv shell
+
+uvicorn app.main:app --reload
+
+npm run dev

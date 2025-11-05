@@ -1,0 +1,7 @@
+git add .
+
+# Commit qiling
+git commit -m "ArmyPro loyihasi"
+
+# Push qiling
+git push -u origin main
